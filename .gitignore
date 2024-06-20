@@ -1,0 +1,5 @@
+philo/philo
+philo/obj/check_args.o
+philo/obj/main.o
+philo/obj/philosophers.o
+philo/obj/utils.o
