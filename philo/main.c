@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 	t_params params;
 	t_philo *philo;
 	pthread_mutex_t *forks;
+	pthread_mutex_t *write_mutex;
 	
 	if (check_args(argc, argv))
 		return (1);
@@ -22,16 +23,25 @@ int main(int argc, char **argv)
 	else
 		params.max_meals = -1;
 	forks = malloc(sizeof(pthread_mutex_t) * params.num_philos);
-	if (!forks)
+	write_mutex = init_write_mutex();
+	if (!forks || !write_mutex)
+	{
+		printf("Error: Failed to initialize forks or write mutex\n");
+		free(forks);
+		free(write_mutex);
 		return (1);
-	philo = init_philos(&params, forks);
+	}
+	philo = init_philos(&params, forks, write_mutex);
 	if (!philo)
 	{
 		printf("Error: Failed to initialize philosophers\n");
 		free(forks);
+		free(write_mutex);
 		return (1);
 	}
 	start_simulation(philo, params.num_philos);
+	pthread_mutex_destroy(write_mutex);
+	free(write_mutex);
 	free(forks);
 	free(philo);
 	return (0);

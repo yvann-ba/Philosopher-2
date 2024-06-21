@@ -17,9 +17,11 @@ void ft_putstr(char *str)
 }
 
 
-void safe_write(int id, char *msg)
+void safe_write(int id, char *msg, pthread_mutex_t *g_write_mutex)
 {
+	pthread_mutex_lock(g_write_mutex);
     ft_putstr("Philosopher ");
     ft_putnbr(id);
     ft_putstr(msg);
+	pthread_mutex_unlock(g_write_mutex);
 }

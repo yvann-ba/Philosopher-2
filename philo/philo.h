@@ -21,6 +21,7 @@ typedef struct s_philo
     pthread_t monitor_thread;
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
+	pthread_mutex_t *write_mutex;
 	struct timeval last_meal;
 } t_philo;
 
@@ -33,16 +34,26 @@ typedef struct s_params
 	int max_meals;
 } t_params;
 
-int ft_is_digit(char *str);
-int	ft_atoi(const char *str);
-int check_args(int argc, char **argv);
-t_philo *init_philos(t_params *params, pthread_mutex_t *forks);
-void start_simulation(t_philo *philo, int num_philos);
-void *monitor_routine(void *arg);
-unsigned long get_time_in_ms(void);
-void safe_write(int id, char *msg);
-void *philo_routine(void *arg);
+// print_utils.c
 void ft_putnbr(int n);
 void ft_putstr(char *str);
+void safe_write(int id, char *msg, pthread_mutex_t *g_write_mutex);
+
+//utils.c
+int ft_is_digit(char *str);
+int	ft_atoi(const char *str);
+unsigned long get_time_in_ms(void);
+
+//check_args.c
+int check_args(int argc, char **argv);
+
+//init_philo.c
+t_philo *init_philos(t_params *params, pthread_mutex_t *forks, pthread_mutex_t *write_mutex);
+pthread_mutex_t *init_write_mutex(void);
+
+//philo.c
+void start_simulation(t_philo *philo, int num_philos);
+void *monitor_routine(void *arg);
+void *philo_routine(void *arg);
 
 #endif
