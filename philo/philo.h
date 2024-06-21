@@ -40,5 +40,9 @@ t_philo *init_philos(t_params *params, pthread_mutex_t *forks);
 void start_simulation(t_philo *philo, int num_philos);
 void *monitor_routine(void *arg);
 unsigned long get_time_in_ms(void);
+void safe_write(int id, char *msg);
+void *philo_routine(void *arg);
+void ft_putnbr(int n);
+void ft_putstr(char *str);
 
 #endif

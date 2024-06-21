@@ -7,7 +7,7 @@ YELLOW = \033[0;33m
 RED = \033[0;31m
 NC = \033[0m
 
-SRC = check_args.c main.c philo.c utils.c init_philo.c
+SRC = check_args.c main.c philo.c utils.c init_philo.c print_utils.c
 
 OBJ_DIR = ./obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
