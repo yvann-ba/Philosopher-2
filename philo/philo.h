@@ -30,18 +30,11 @@ typedef struct s_params
 	int max_meals;
 } t_params;
 
-typedef struct s_forks
-{
-	pthread_mutex_t *forks;
-} t_forks;
-
 int ft_is_digit(char *str);
 int	ft_atoi(const char *str);
 int check_args(int argc, char **argv);
 
-t_philo *init_philos(t_params *params, t_forks *forks);
-void init_philo_data(t_philo *philo, int id, t_params *params, t_forks *forks);
-void *philo_routine(void *arg);
+t_philo *init_philos(t_params *params, pthread_mutex_t *forks);
 void start_simulation(t_philo *philo, int num_philos);
 
 #endif

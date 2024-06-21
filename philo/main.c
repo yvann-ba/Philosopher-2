@@ -8,9 +8,9 @@
 int main(int argc, char **argv)
 {
 	t_params params;
-	t_forks forks;
 	t_philo *philo;
-
+	pthread_mutex_t *forks;
+	
 	if (check_args(argc, argv))
 		return (1);
 	params.num_philos = ft_atoi(argv[1]);
@@ -21,15 +21,18 @@ int main(int argc, char **argv)
 		params.max_meals = ft_atoi(argv[5]);
 	else
 		params.max_meals = -1;
-	
-	philo = init_philos(&params, &forks);
+	forks = malloc(sizeof(pthread_mutex_t) * params.num_philos);
+	if (!forks)
+		return (1);
+	philo = init_philos(&params, forks);
 	if (!philo)
 	{
 		printf("Error: Failed to initialize philosophers\n");
+		free(forks);
 		return (1);
 	}
 	start_simulation(philo, params.num_philos);
+	free(forks);
 	free(philo);
-	free(forks.forks);
 	return (0);
 }
