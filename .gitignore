@@ -3,3 +3,5 @@ philo/obj/check_args.o
 philo/obj/main.o
 philo/obj/philosophers.o
 philo/obj/utils.o
+philo/obj/*.o
+philo/obj/init_philo.o
