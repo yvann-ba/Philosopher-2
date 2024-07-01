@@ -14,11 +14,13 @@ pthread_mutex_t *init_write_mutex(void)
 void init_philo_data(t_philo *philo, int id, t_params *params, pthread_mutex_t *forks)
 {
 	philo->id = id;
+	philo->num_philos = params->num_philos;
 	philo->time_to_die = params->time_to_die;
 	philo->time_to_eat = params->time_to_eat;
 	philo->time_to_sleep = params->time_to_sleep;
 	philo->num_meals = 0;
 	philo->max_meals = params->max_meals;
+	gettimeofday(&philo->start_time, NULL);
 	philo->left_fork = &forks[id - 1];
 	philo->right_fork = &forks[id % params->num_philos];
 	gettimeofday(&philo->last_meal, NULL);

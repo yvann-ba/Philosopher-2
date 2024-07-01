@@ -23,6 +23,8 @@ typedef struct s_philo
     pthread_mutex_t *right_fork;
 	pthread_mutex_t *write_mutex;
 	struct timeval last_meal;
+	int num_philos;
+	struct timeval start_time;
 } t_philo;
 
 typedef struct s_params
@@ -32,17 +34,21 @@ typedef struct s_params
 	int time_to_eat;
 	int time_to_sleep;
 	int max_meals;
+	unsigned long start_time;
 } t_params;
 
 // print_utils.c
 void ft_putnbr(int n);
 void ft_putstr(char *str);
-void safe_write(int id, char *msg, pthread_mutex_t *g_write_mutex);
+void safe_write(t_philo *philo, char *msg);
 
 //utils.c
 int ft_is_digit(char *str);
 int	ft_atoi(const char *str);
-unsigned long get_time_in_ms(void);
+unsigned long get_time_in_ms(struct timeval start);
+
+void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, int num_philos);
+
 
 //check_args.c
 int check_args(int argc, char **argv);

@@ -11,6 +11,7 @@ int main(int argc, char **argv)
 	t_philo *philo;
 	pthread_mutex_t *forks;
 	pthread_mutex_t *write_mutex;
+	int i;
 	
 	if (check_args(argc, argv))
 		return (1);
@@ -35,14 +36,17 @@ int main(int argc, char **argv)
 	if (!philo)
 	{
 		printf("Error: Failed to initialize philosophers\n");
-		free(forks);
-		free(write_mutex);
+		cleanup(philo, forks, write_mutex, params.num_philos);
 		return (1);
 	}
 	start_simulation(philo, params.num_philos);
-	pthread_mutex_destroy(write_mutex);
-	free(write_mutex);
-	free(forks);
-	free(philo);
+	i = 0;
+	while (i < params.num_philos)
+	{
+        pthread_join(philo[i].thread, NULL);
+        pthread_join(philo[i].monitor_thread, NULL);
+		i++;
+	}
+    cleanup(philo, forks, write_mutex, params.num_philos);
 	return (0);
 }

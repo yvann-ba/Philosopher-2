@@ -17,11 +17,26 @@ void ft_putstr(char *str)
 }
 
 
-void safe_write(int id, char *msg, pthread_mutex_t *g_write_mutex)
+void safe_write(t_philo *philo, char *msg)
 {
-	pthread_mutex_lock(g_write_mutex);
-    ft_putstr("Philosopher ");
-    ft_putnbr(id);
-    ft_putstr(msg);
-	pthread_mutex_unlock(g_write_mutex);
+	unsigned long current_time = get_time_in_ms(philo->start_time);
+
+	pthread_mutex_lock(philo->write_mutex);
+	ft_putnbr(current_time);
+	ft_putstr(" ");
+	ft_putnbr(philo->id);
+	ft_putstr(msg);
+	pthread_mutex_unlock(philo->write_mutex);
 }
+//void safe_write(t_philo philo, char *msg)
+//{
+//	unsigned long current_time = get_time_in_ms();
+
+
+
+//	pthread_mutex_lock();
+//    printf("%lu ", current_time);
+//    printf("%d", id);
+//    printf("%s", msg);
+//	pthread_mutex_unlock(write_mutex);
+//}

@@ -1,10 +1,23 @@
 #include "philo.h"
 
-unsigned long get_time_in_ms(void)
+//unsigned long	get_current_time_in_ms(void)
+//{
+//	struct timeval	time;
+
+//	gettimeofday(&time, NULL);
+//	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+//}
+
+//unsigned long	get_time_in_ms(unsigned long start_time)
+//{
+//	return (get_current_time_in_ms() - start_time);
+//}
+
+unsigned long get_time_in_ms(struct timeval start)
 {
-    struct timeval time;
-    gettimeofday(&time, NULL);
-    return (time.tv_sec * 1000 + time.tv_usec / 1000);
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    return ((now.tv_sec - start.tv_sec) * 1000 + (now.tv_usec - start.tv_usec) / 1000);
 }
 
 int ft_is_digit(char *str)
@@ -44,4 +57,20 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (sign * res);
+}
+
+void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, int num_philos)
+{
+    int i;
+
+	i = 0;
+    while (i < num_philos)
+    {
+        pthread_mutex_destroy(&forks[i]);
+		i++;
+    }
+    pthread_mutex_destroy(write_mutex);
+    free(forks);
+    free(write_mutex);
+    free(philo);
 }

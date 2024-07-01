@@ -1,6 +1,8 @@
 NAME = ./philo
 CC = /bin/cc
-CFLAGS = -Wall -Wextra -Werror -g -pthread 
+CFLAGS = -Wall -Wextra -Werror -g 
+#-fsanitize=thread
+#-fsanitize=thread 
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
