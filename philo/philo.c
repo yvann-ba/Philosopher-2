@@ -17,8 +17,6 @@ void *monitor_routine(void *arg)
         if (current_time - last_meal_time > (unsigned long)philo->time_to_die * 1000)
         {
             safe_write(philo, " died\n");
-            ft_putnbr(current_time);
-            ft_putstr("\n");
 			//cleanup(philo, philo->left_fork, philo->write_mutex, philo->num_philos);
             exit(0);
         }
@@ -31,7 +29,17 @@ void *philo_routine(void *arg)
     t_philo *philo;
 
     philo = (t_philo *)arg;
+    if (philo->num_philos > 1)
     pthread_create(&philo->monitor_thread, NULL, monitor_routine, philo);
+    else
+    {
+        pthread_mutex_lock(philo->left_fork);
+        safe_write(philo, " has taken the left fork\n");
+        usleep(philo->time_to_die * 1000);
+        safe_write(philo, " has died\n");
+        pthread_mutex_unlock(philo->left_fork);
+        return NULL;
+    }
     while (1)
     {
         if (philo->id % 2 == 0)
