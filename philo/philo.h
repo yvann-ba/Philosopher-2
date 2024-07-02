@@ -61,5 +61,7 @@ pthread_mutex_t *init_write_mutex(void);
 void start_simulation(t_philo *philo, int num_philos);
 void *monitor_routine(void *arg);
 void *philo_routine(void *arg);
+void	monitor_thread(t_philo *philo);
+
 
 #endif

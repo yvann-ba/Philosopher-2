@@ -5,3 +5,7 @@ philo/obj/philosophers.o
 philo/obj/utils.o
 philo/obj/*.o
 philo/obj/init_philo.o
+Philosphers-42Project-Tester/errors_log
+Philosphers-42Project-Tester/preview.png
+Philosphers-42Project-Tester/README.md
+Philosphers-42Project-Tester/start.sh

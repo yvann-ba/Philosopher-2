@@ -28,8 +28,8 @@ void init_philo_data(t_philo *philo, int id, t_params *params, pthread_mutex_t *
 
 t_philo *init_philos(t_params *params, pthread_mutex_t *forks, pthread_mutex_t *write_mutex)
 {
-	t_philo *philo;
-	int i;
+	t_philo	*philo;
+	int		i;
 
 	philo = malloc(sizeof(t_philo) * params->num_philos);
 	if (!philo || !forks || !write_mutex)
