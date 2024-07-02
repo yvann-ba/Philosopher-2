@@ -1,25 +1,5 @@
 #include "philo.h"
 
-//unsigned long	get_current_time_in_ms(void)
-//{
-//	struct timeval	time;
-
-//	gettimeofday(&time, NULL);
-//	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-//}
-
-//unsigned long	get_time_in_ms(unsigned long start_time)
-//{
-//	return (get_current_time_in_ms() - start_time);
-//}
-
-unsigned long get_time_in_ms(struct timeval start)
-{
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    return ((now.tv_sec - start.tv_sec) * 1000 + (now.tv_usec - start.tv_usec) / 1000);
-}
-
 int ft_is_digit(char *str)
 {
     int i = 0;
@@ -59,6 +39,13 @@ int	ft_atoi(const char *str)
 	return (sign * res);
 }
 
+unsigned long get_time_in_ms(struct timeval start)
+{
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    return ((now.tv_sec - start.tv_sec) * 1000 + (now.tv_usec - start.tv_usec) / 1000);
+}
+//protect dead mutex search quand queuqeun es tmort
 void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, int num_philos)
 {
     int i;
@@ -67,9 +54,11 @@ void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mute
     while (i < num_philos)
     {
         pthread_mutex_destroy(&forks[i]);
+        pthread_mutex_destroy(&philo[i].meal_mutex);
 		i++;
     }
-    pthread_mutex_destroy(write_mutex);
+    if (write_mutex)
+        pthread_mutex_destroy(write_mutex);
     free(forks);
     free(write_mutex);
     free(philo);

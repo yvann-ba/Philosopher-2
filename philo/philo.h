@@ -22,6 +22,7 @@ typedef struct s_philo
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
 	pthread_mutex_t *write_mutex;
+	pthread_mutex_t meal_mutex;
 	struct timeval last_meal;
 	int num_philos;
 	struct timeval start_time;

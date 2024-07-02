@@ -76,7 +76,10 @@ int	main(int argc, char **argv)
 	if (init_resources(&params, &forks, &write_mutex))
 		return (1);
 	if (launch_philosophers(&philo, &params, forks, write_mutex))
+	{
+		cleanup(philo, forks, write_mutex, params.num_philos);
 		return (1);
+	}
 	wait_for_philosophers(philo, params.num_philos);
 	cleanup(philo, forks, write_mutex, params.num_philos);
 	return (0);

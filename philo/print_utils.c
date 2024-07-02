@@ -26,17 +26,9 @@ void safe_write(t_philo *philo, char *msg)
 	ft_putstr(" ");
 	ft_putnbr(philo->id);
 	ft_putstr(msg);
+    // ft_putstr(" ");
+	// ft_putnbr(philo->num_meals);
+    // ft_putstr(" meal");
+
 	pthread_mutex_unlock(philo->write_mutex);
 }
-//void safe_write(t_philo philo, char *msg)
-//{
-//	unsigned long current_time = get_time_in_ms();
-
-
-
-//	pthread_mutex_lock();
-//    printf("%lu ", current_time);
-//    printf("%d", id);
-//    printf("%s", msg);
-//	pthread_mutex_unlock(write_mutex);
-//}
