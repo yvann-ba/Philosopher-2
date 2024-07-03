@@ -19,9 +19,10 @@ void ft_putstr(char *str)
 
 void safe_write(t_philo *philo, char *msg)
 {
-	unsigned long current_time = get_time_in_ms(philo->start_time);
+	unsigned long current_time;
 
 	pthread_mutex_lock(philo->write_mutex);
+    current_time = get_time_in_ms(philo->start_time);
 	ft_putnbr(current_time);
 	ft_putstr(" ");
 	ft_putnbr(philo->id);

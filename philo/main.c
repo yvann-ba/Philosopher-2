@@ -12,6 +12,8 @@ static int	init_params(t_params *params, int argc, char **argv)
 		params->max_meals = ft_atoi(argv[5]);
 	else
 		params->max_meals = -1;
+	params->simulation_running = 1;
+	pthread_mutex_init(&params->simulation_mutex, NULL);
 	return (0);
 }
 
@@ -37,21 +39,26 @@ static int	launch_philosophers(t_philo **philo, t_params *params,
 	if (!(*philo))
 	{
 		printf("Error: Failed to initialize philosophers\n");
-		cleanup(*philo, forks, write_mutex, params->num_philos);
+		cleanup(*philo, forks, write_mutex, params);
 		return (1);
 	}
 	start_simulation(*philo, params->num_philos);
 	return (0);
 }
 
-static void	wait_for_philosophers(t_philo *philo, int num_philos)
+static void	wait_for_philosophers(t_philo *philo, int num_philos, t_params *params)
 {
 	int	i;
-
+	(void)params;
 	i = 0;
 	while (i < num_philos)
 	{
 		pthread_join(philo[i].thread, NULL);
+		i++;
+	}
+	i = 0;
+	while (i < num_philos)
+	{
 		if (num_philos > 1)
 			pthread_join(philo[i].monitor_thread, NULL);
 		i++;
@@ -77,10 +84,21 @@ int	main(int argc, char **argv)
 		return (1);
 	if (launch_philosophers(&philo, &params, forks, write_mutex))
 	{
-		cleanup(philo, forks, write_mutex, params.num_philos);
+		cleanup(philo, forks, write_mutex, &params);
 		return (1);
 	}
-	wait_for_philosophers(philo, params.num_philos);
-	cleanup(philo, forks, write_mutex, params.num_philos);
+    while (1)
+    {
+        usleep(1000);
+        pthread_mutex_lock(&params.simulation_mutex);
+        if (!params.simulation_running)
+        {
+            pthread_mutex_unlock(&params.simulation_mutex);
+            break;
+        }
+        pthread_mutex_unlock(&params.simulation_mutex);
+    }
+	wait_for_philosophers(philo, params.num_philos, &params);
+	cleanup(philo, forks, write_mutex, &params);
 	return (0);
 }

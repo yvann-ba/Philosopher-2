@@ -25,6 +25,7 @@ void init_philo_data(t_philo *philo, int id, t_params *params, pthread_mutex_t *
 	pthread_mutex_init(&philo->meal_mutex, NULL);
 	philo->right_fork = &forks[id % params->num_philos];
 	gettimeofday(&philo->last_meal, NULL);
+	philo->params = params;
 }
 
 t_philo *init_philos(t_params *params, pthread_mutex_t *forks, pthread_mutex_t *write_mutex)

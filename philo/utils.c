@@ -45,13 +45,13 @@ unsigned long get_time_in_ms(struct timeval start)
     gettimeofday(&now, NULL);
     return ((now.tv_sec - start.tv_sec) * 1000 + (now.tv_usec - start.tv_usec) / 1000);
 }
-//protect dead mutex search quand queuqeun es tmort
-void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, int num_philos)
+
+void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, t_params *params)
 {
     int i;
 
 	i = 0;
-    while (i < num_philos)
+    while (i < params->num_philos)
     {
         pthread_mutex_destroy(&forks[i]);
         pthread_mutex_destroy(&philo[i].meal_mutex);
@@ -59,6 +59,7 @@ void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mute
     }
     if (write_mutex)
         pthread_mutex_destroy(write_mutex);
+    pthread_mutex_destroy(&params->simulation_mutex);
     free(forks);
     free(write_mutex);
     free(philo);

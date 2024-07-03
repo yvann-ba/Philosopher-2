@@ -8,6 +8,17 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+typedef struct s_params
+{
+	int	simulation_running;
+	pthread_mutex_t simulation_mutex;
+	int num_philos;
+	int time_to_die;
+	int time_to_eat;
+	int time_to_sleep;
+	int max_meals;
+	unsigned long start_time;
+} t_params;
 
 typedef struct s_philo
 {
@@ -26,17 +37,8 @@ typedef struct s_philo
 	struct timeval last_meal;
 	int num_philos;
 	struct timeval start_time;
+	t_params *params;
 } t_philo;
-
-typedef struct s_params
-{
-	int num_philos;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
-	int max_meals;
-	unsigned long start_time;
-} t_params;
 
 // print_utils.c
 void ft_putnbr(int n);
@@ -48,7 +50,7 @@ int ft_is_digit(char *str);
 int	ft_atoi(const char *str);
 unsigned long get_time_in_ms(struct timeval start);
 
-void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, int num_philos);
+void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, t_params *params);
 
 
 //check_args.c
