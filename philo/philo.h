@@ -8,59 +8,58 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+struct	s_data;
+struct	s_threads;
+
 typedef struct s_params
 {
-	int	simulation_running;
-	pthread_mutex_t simulation_mutex;
 	int num_philos;
 	int time_to_die;
 	int time_to_eat;
 	int time_to_sleep;
 	int max_meals;
+	int	all_eaten;
+	pthread_mutex_t all_eaten_mutex;
+	int is_died;
+	pthread_mutex_t is_died_mutex;
+	pthread_mutex_t write_mutex;
 	unsigned long start_time;
+	t_philo *philo;
 } t_params;
 
 typedef struct s_philo
 {
 	int	id;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
 	int num_meals;
-	int max_meals;
     pthread_t thread;
-    pthread_t monitor_thread;
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
-	pthread_mutex_t *write_mutex;
 	pthread_mutex_t meal_mutex;
-	struct timeval last_meal;
-	int num_philos;
-	struct timeval start_time;
-	t_params *params;
+	unsigned long last_meal;
+	struct s_params *params;
+	
 } t_philo;
 
-// print_utils.c
 void ft_putnbr(int n);
 void ft_putstr(char *str);
 void safe_write(t_philo *philo, char *msg);
 
-//utils.c
+
 int ft_is_digit(char *str);
 int	ft_atoi(const char *str);
-unsigned long get_time_in_ms(struct timeval start);
 
 void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, t_params *params);
 
+unsigned long get_current_time_in_ms();
+long long	get_elapsed_time(long long start_time);
+long long	get_current_time_in_us(void);
 
-//check_args.c
+
 int check_args(int argc, char **argv);
 
-//init_philo.c
 t_philo *init_philos(t_params *params, pthread_mutex_t *forks, pthread_mutex_t *write_mutex);
 pthread_mutex_t *init_write_mutex(void);
 
-//philo.c
 void start_simulation(t_philo *philo, int num_philos);
 void *monitor_routine(void *arg);
 void *philo_routine(void *arg);
