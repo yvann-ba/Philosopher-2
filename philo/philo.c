@@ -1,37 +1,10 @@
 #include "philo.h"
 
-void *monitor_routine(void *arg)
+unsigned long get_time_in_ms2()
 {
-    t_philo *philo = (t_philo *)arg;
-    unsigned long last_meal_time;
-    unsigned long start_time;
-
-    
-    while (1)
-    {
-        usleep(1000);
-        pthread_mutex_lock(&philo->meal_mutex);
-        last_meal_time = get_time_in_ms(philo->last_meal);
-        start_time = get_time_in_ms(philo->start_time);
-        if (start_time - last_meal_time > (unsigned long)philo->time_to_die)
-        {
-            pthread_mutex_unlock(&philo->meal_mutex);
-            safe_write(philo, " died\n");
-            pthread_mutex_lock(&philo->params->simulation_mutex);
-            philo->params->simulation_running = 0;
-            pthread_mutex_unlock(&philo->params->simulation_mutex);
-            return NULL;
-        }
-        pthread_mutex_unlock(&philo->meal_mutex);
-
-        pthread_mutex_lock(&philo->params->simulation_mutex);
-        if (!philo->params->simulation_running)
-        {
-            pthread_mutex_unlock(&philo->params->simulation_mutex);
-            return NULL;
-        }
-        pthread_mutex_unlock(&philo->params->simulation_mutex);
-    }
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    return (now.tv_sec * 1000 + now.tv_usec / 1000);
 }
 
 void	monitor_thread(t_philo *philo)
