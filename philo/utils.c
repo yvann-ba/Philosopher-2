@@ -39,14 +39,7 @@ int	ft_atoi(const char *str)
 	return (sign * res);
 }
 
-unsigned long get_time_in_ms(struct timeval start)
-{
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    return ((now.tv_sec - start.tv_sec) * 1000 + (now.tv_usec - start.tv_usec) / 1000);
-}
-
-void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mutex, t_params *params)
+void cleanup(t_philo *philo, pthread_mutex_t *forks, t_params *params)
 {
     int i;
 
@@ -57,10 +50,9 @@ void cleanup(t_philo *philo, pthread_mutex_t *forks, pthread_mutex_t *write_mute
         pthread_mutex_destroy(&philo[i].meal_mutex);
 		i++;
     }
-    if (write_mutex)
-        pthread_mutex_destroy(write_mutex);
-    pthread_mutex_destroy(&params->simulation_mutex);
+    pthread_mutex_destroy(&params->write_mutex);
+    pthread_mutex_destroy(&params->all_eaten_mutex);
+    pthread_mutex_destroy(&params->is_dead_mutex);
     free(forks);
-    free(write_mutex);
     free(philo);
 }

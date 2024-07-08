@@ -1,48 +1,13 @@
 #include "philo.h"
 
-static int	init_params(t_params *params, int argc, char **argv)
-{
-	if (check_args(argc, argv))
-		return (1);
-	params->num_philos = ft_atoi(argv[1]);
-	params->time_to_die = ft_atoi(argv[2]);
-	params->time_to_eat = ft_atoi(argv[3]);
-	params->time_to_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		params->max_meals = ft_atoi(argv[5]);
-	else
-		params->max_meals = -1;
-	params->all_eaten = 0;
-	pthread_mutex_init(&params->all_eaten_mutex, NULL);
-	params->is_died = 0;
-	pthread_mutex_init(&params->is_died_mutex, NULL);
-	pthread_mutex_init(&params->write_mutex, NULL);
-	gettimeofday(&params->start_time, NULL);
-
-	return (0);
-}
-
-static int	init_resources(t_params *params, pthread_mutex_t **forks,
-	pthread_mutex_t **write_mutex)
-{
-	*forks = malloc(sizeof(pthread_mutex_t) * params->num_philos);
-	if (!(*forks))
-	{
-		printf("Error: Failed to initialize forks\n");
-		free(*forks);
-		return (1);
-	}
-	return (0);
-}
-
 static int	launch_philosophers(t_philo **philo, t_params *params,
-	pthread_mutex_t *forks, pthread_mutex_t *write_mutex)
+	pthread_mutex_t *forks)
 {
-	*philo = init_philos(params, forks, write_mutex);
+	*philo = init_philos(params, forks);
 	if (!(*philo))
 	{
 		printf("Error: Failed to initialize philosophers\n");
-		cleanup(*philo, forks, write_mutex, params);
+		cleanup(*philo, forks, params);
 		return (1);
 	}
 	return (0);
@@ -60,7 +25,7 @@ static void	wait_for_philosophers(t_philo *philo, int num_philos, t_params *para
 	}
 }
 
-void *monitor_routine(t_philo *philo)
+int monitor_simulation(t_philo *philo)
 {
     unsigned long current_time;
     unsigned long time_since_last_meal;
@@ -68,31 +33,36 @@ void *monitor_routine(t_philo *philo)
     while (1)
     {
         usleep(1000);
+        current_time = get_current_time_in_ms();
         pthread_mutex_lock(&philo->meal_mutex);
-        current_time = get();
         time_since_last_meal = current_time - philo->last_meal;
-		if (time_since_last_meal == current_time)
-			time_since_last_meal = 0;
+        pthread_mutex_unlock(&philo->meal_mutex);
 
-        printf("current time = %ld\nlast meal = %ld\ntime since last meal = %ld\ntime to die = %ld\n", 
-               current_time, philo->last_meal, time_since_last_meal, (unsigned long)philo->params->time_to_die);
+		// if (time_since_last_meal == current_time)
+		// 	time_since_last_meal = 0;
+
+//        pthread_mutex_lock(&philo->params->write_mutex);
+//        printf("current time = %ld\nlast meal = %ld\ntime since last meal = %ld\ntime to die = %ld\n", 
+//               current_time, philo->last_meal, time_since_last_meal, (unsigned long)philo->params->time_to_die);
+//        pthread_mutex_unlock(&philo->params->write_mutex);
+
         if (time_since_last_meal >= (unsigned long)philo->params->time_to_die)
         {
-            safe_write(philo, " died moni\n");
-            pthread_mutex_lock(&philo->params->is_died_mutex);
-            philo->params->is_died = 0;
-            pthread_mutex_unlock(&philo->params->is_died_mutex);
-            return NULL;
+            safe_write(philo, " has died\n");
+            pthread_mutex_lock(&philo->params->is_dead_mutex);
+            philo->params->is_dead = 1;
+            pthread_mutex_unlock(&philo->params->is_dead_mutex);
+            return (1);
         }
-        pthread_mutex_unlock(&philo->meal_mutex);
-        pthread_mutex_lock(&philo->params->simulation_mutex);
-        if (philo->num_meals >= philo->params->max_meals)
+        pthread_mutex_lock(&philo->params->all_eaten_mutex);
+        if (philo->params->all_eaten == philo->params->num_philos)
         {
-            pthread_mutex_unlock(&philo->params->simulation_mutex);
-            return NULL;
+            pthread_mutex_unlock(&philo->params->all_eaten_mutex);
+            return (1);
         }
-        pthread_mutex_unlock(&philo->params->simulation_mutex);
+        pthread_mutex_unlock(&philo->params->all_eaten_mutex);
     }
+	return (0);
 }
 
 // args:
@@ -103,20 +73,18 @@ void *monitor_routine(t_philo *philo)
 //  5 [number_of_times_each_philosopher_must_eat]
 int	main(int argc, char **argv)
 {
-	t_params		*params;
+	t_params		params;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*write_mutex;
-	int i;
 
 	if (init_params(&params, argc, argv))
 		return (1);
-	if (init_resources(&params, &forks, &write_mutex))
+	if (init_resources(&params, &forks))
 		return (1);
-	launch_philosophers(philo, params, forks, write_mutex);
-	start_simulation(philo, params->num_philos);
-	monitor
-	wait_for_philosophers(philo, params->num_philos, &params);
-	cleanup(philo, forks, write_mutex, &params);
+	launch_philosophers(&philo, &params, forks);
+	start_simulation(philo, params.num_philos);
+	monitor_simulation(philo);
+	wait_for_philosophers(philo, params.num_philos, &params);
+	cleanup(philo, forks, &params);
 	return (0);
 }

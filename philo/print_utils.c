@@ -22,7 +22,7 @@ void safe_write(t_philo *philo, char *msg)
 	unsigned long current_time;
 
 	pthread_mutex_lock(&philo->params->write_mutex);
-    current_time = get_elapsed_time(&philo->params->start_time);
+    current_time = get_elapsed_time((long long)philo->params->start_time);
 	ft_putnbr(current_time);
 	ft_putstr(" ");
 	ft_putnbr(philo->id);

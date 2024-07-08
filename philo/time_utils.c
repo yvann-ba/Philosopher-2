@@ -11,7 +11,7 @@ long long	get_elapsed_time(long long start_time)
 {
 	long long	elapsed_time;
 
-	elapsed_time = get_current_time() - start_time;
+	elapsed_time = get_current_time_in_ms() - start_time;
 	return (elapsed_time);
 }
 
