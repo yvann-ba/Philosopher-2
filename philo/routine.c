@@ -82,6 +82,7 @@ void *philo_routine(void *arg)
 {
     t_philo *philo = (t_philo *)arg;
 
+
     while (!check_end(philo))
     {
         if (philo->params->num_philos == 1)

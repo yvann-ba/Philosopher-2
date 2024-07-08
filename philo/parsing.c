@@ -41,7 +41,7 @@ int check_min_times(int argc, char **argv)
 	return (0);
 }
 
-int check_limits(int argc, char **argv)
+int check_args(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -56,12 +56,6 @@ int check_limits(int argc, char **argv)
 		return (1);
 	}
 	if (check_min_times(argc, argv))
-		return (1);
-	return (0);
-}
-int check_args(int argc, char **argv)
-{
-	if (check_limits(argc, argv))
 		return (1);
 	return (0);
 }
