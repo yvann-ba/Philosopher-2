@@ -1,15 +1,33 @@
-// #include "philo.h"
+#include "philo.h"
 
-// int	error_handle(const char *msg, t_params *params)
-// {
-// 	if (params)
-// 	{
-// 		if (params->philo)
-// 			join_threads(params);
-// 		if (params->forks)
-// 			free_forks(params);
-// 		free_params(params);
-// 	}
-// 	printf("Error: %s\n", msg);
-// 	return (0);
-// }
+int	error_handle(const char *msg, t_params *params)
+{
+	if (params)
+	{
+		if (params->philo)
+			join_philos(params);
+		if (params->forks)
+			free_forks(params);
+		free_params(params);
+	}
+	printf("Error: %s\n", msg);
+	return (0);
+}
+
+void cleanup(t_params *params)
+{
+    int i;
+
+	i = 0;
+    // while (i < params->num_philos)
+    // {
+    //     pthread_mutex_destroy(params&forks[i]);
+    //     pthread_mutex_destroy(&philo[i].meal_mutex);
+	// 	i++;
+    // }
+    // pthread_mutex_destroy(&params->write_mutex);
+    // pthread_mutex_destroy(&params->all_eaten_mutex);
+    // pthread_mutex_destroy(&params->is_dead_mutex);
+    free(params->forks);
+    free(params->philo);
+}

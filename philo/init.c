@@ -12,9 +12,10 @@ int	init_params(t_params *params, int argc, char **argv)
 		params->max_meals = ft_atoi(argv[5]);
 	else
 		params->max_meals = -1;
+	params->all_eaten = 0;
 	params->is_dead = 0;
-	params->start_time = get_current_time_in_ms();
 	pthread_mutex_init(&params->is_dead_mutex, NULL);
+	pthread_mutex_init(&params->all_eaten_mutex, NULL);
 	pthread_mutex_init(&params->write_mutex, NULL);
 	return (0);
 }
@@ -53,11 +54,12 @@ t_philo *init_philos(t_params *params)
 	while (i < params->num_philos)
 	{
 		params->philo[i].id = i + 1;
-		printf("philo id: %d\n", params->philo->id);
+		printf("philo id: %d\n", params->philo[i].id);
 		params->philo->num_meals = 0;
 		pthread_mutex_init(&params->philo->meal_mutex, NULL);
 		params->philo->last_meal = 0;
 		params->philo->params = params;
+		params->start_time = get_current_time_in_ms();
 		i++;
 	}
 	return (params->philo);

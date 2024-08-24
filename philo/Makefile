@@ -1,6 +1,6 @@
 NAME = ./philo
 CC = /bin/cc
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror -g
 #-fsanitize=thread
 #-fsanitize=thread 
 

@@ -1,12 +1,5 @@
 #include "philo.h"
 
-unsigned long get_time_in_ms()
-{
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    return (now.tv_sec * 1000 + now.tv_usec / 1000);
-}
-
 void start_simulation(t_params *params, int num_philos)
 {
     int i;

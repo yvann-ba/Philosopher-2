@@ -39,20 +39,3 @@ int	ft_atoi(const char *str)
 	return (sign * res);
 }
 
-// void cleanup(t_params *params)
-// {
-//     int i;
-
-// 	i = 0;
-//     while (i < params->num_philos)
-//     {
-//         pthread_mutex_destroy(&forks[i]);
-//         pthread_mutex_destroy(&philo[i].meal_mutex);
-// 		i++;
-//     }
-//     pthread_mutex_destroy(&params->write_mutex);
-//     pthread_mutex_destroy(&params->all_eaten_mutex);
-//     pthread_mutex_destroy(&params->is_dead_mutex);
-//     free(forks);
-//     free(philo);
-// }

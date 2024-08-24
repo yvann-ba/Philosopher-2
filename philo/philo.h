@@ -28,6 +28,8 @@ typedef struct s_params
 	int 			time_to_die;
 	int 			time_to_eat;
 	int 			time_to_sleep;
+	int				all_eaten;
+	pthread_mutex_t all_eaten_mutex;
 	int 			max_meals;
 	unsigned long 	start_time;
 	pthread_mutex_t	*forks;
@@ -44,13 +46,10 @@ int				init_params(t_params *params, int argc, char **argv);
 int				init_forks(t_params *params);
 t_philo 		*init_philos(t_params *params);
 
-
-int 			monitor_simulation(t_params *params);
-int 			check_end(t_params *params);
+int				monitor_philo(t_params *params);
 void 			start_simulation(t_params *params, int num_philos);
-void 			*monitor_routine(void *arg);
 void 			*philo_routine(void *arg);
-void			monitor_thread(t_params *params);
+void			join_philos(t_params *params);
 
 //UTILS
 void 			ft_putnbr(int n);
@@ -67,7 +66,7 @@ long long		get_current_time_in_us(void);
 unsigned long 	get_current_time_in_ms(void);
 
 //CLEAN || EXIT
-void 			cleanup(t_philo *philo, pthread_mutex_t *forks, t_params *params);
+void 			cleanup(t_params *params);
 int				error_handle(const char *msg, t_params *params);
 
 #endif
