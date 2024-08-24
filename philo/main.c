@@ -1,26 +1,50 @@
 #include "philo.h"
 
+
+int is_philo_died(t_philo *philo)
+{
+	long long current_time;
+
+	current_time = get_current_time_in_ms();
+	pthread_mutex_lock(&philo->params->is_dead_mutex);
+	if (((current_time - philo->last_meal) > philo->params->time_to_die))
+	{
+		philo->params->is_dead = 1;
+		safe_write(philo, " is died\n");
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->params->is_dead_mutex);
+	return (0);
+}
 int monitor_philo(t_params *params)
 {
-    int end_simulation;
+	int i;
 
-	end_simulation = 0;
-    pthread_mutex_lock(&params->is_dead_mutex);
-    if (params->is_dead == 1)
-    {
-        end_simulation = 1;
-    }
-    pthread_mutex_unlock(&philo->params->is_dead_mutex);
-    pthread_mutex_lock(&philo->params->all_eaten_mutex);
-    if (philo->params->all_eaten == philo->params->num_philos)
-    {
-        printf("Philo %d detected all_eaten\n", philo->id);
+	while (1)
+	{
+		i = 0;
+		pthread_mutex_lock(&params->all_eaten_mutex);
+		if (params->all_eaten == params->num_philos)
+		{
+			printf("Philo = all_eaten\n");
+			return (1);
+		}
+		pthread_mutex_lock(&params->is_dead_mutex);
+		if (params->is_dead == 1)
+		{
+	        pthread_mutex_unlock(&params->is_dead_mutex);
 
-        end_simulation = 1;
-    }
-    pthread_mutex_unlock(&philo->params->all_eaten_mutex);
+			clean_exit(params);
+			return (0);
+		}
 
-    return end_simulation;
+		pthread_mutex_unlock(&params->all_eaten_mutex);
+		while (i < params->num_philos)
+			if (is_philo_died(&params->philo[i++]))
+				break;
+
+	}
+    return (0);
 }
 
 void join_philos(t_params *params)
@@ -40,12 +64,12 @@ int main(int argc, char **argv)
 	t_params *params;
 
 	params = malloc(sizeof(t_params));
-	if ((init_params(params, argc, argv) || init_forks(params) || init_philos(params)) == NULL)
+	if (init_params(params, argc, argv) || init_forks(params) || init_philos(params)== NULL)
 		return (1);
 	start_simulation(params, params->num_philos);
 	monitor_philo(params);
-	join_philos(params);
-	cleanup(params);
+	//join_philos(params);
+	//cleanup(params);
 	return (0);
 }
 

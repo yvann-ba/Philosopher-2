@@ -6,7 +6,9 @@
             "type": "shell",
             "command": "make",
             "args": [
-                "all"
+                "-g",
+                "all",
+                "-fsanitize=thread"
             ],
             "group": {
                 "kind": "build",

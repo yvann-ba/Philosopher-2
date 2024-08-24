@@ -17,7 +17,7 @@ typedef struct s_philo
 	int 			num_meals;
 	pthread_t 		thread;
 	pthread_mutex_t meal_mutex;
-	unsigned long	last_meal;
+	long long	last_meal;
 	struct s_params *params;
 	
 } t_philo;
@@ -45,11 +45,15 @@ int 			check_args(int argc, char **argv);
 int				init_params(t_params *params, int argc, char **argv);
 int				init_forks(t_params *params);
 t_philo 		*init_philos(t_params *params);
+int				clean_exit(t_params *params);
+
 
 int				monitor_philo(t_params *params);
 void 			start_simulation(t_params *params, int num_philos);
 void 			*philo_routine(void *arg);
 void			join_philos(t_params *params);
+void			handle_single_philo(t_philo *philo);
+
 
 //UTILS
 void 			ft_putnbr(int n);

@@ -54,11 +54,12 @@ t_philo *init_philos(t_params *params)
 	while (i < params->num_philos)
 	{
 		params->philo[i].id = i + 1;
-		printf("philo id: %d\n", params->philo[i].id);
+		//printf("philo id: %d\n", params->philo[i].id);
 		params->philo->num_meals = 0;
+		params->philo[i].params = params;
 		pthread_mutex_init(&params->philo->meal_mutex, NULL);
 		params->philo->last_meal = 0;
-		params->philo->params = params;
+		//params->philo->params = params;
 		params->start_time = get_current_time_in_ms();
 		i++;
 	}
