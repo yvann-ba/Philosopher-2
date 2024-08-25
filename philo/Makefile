@@ -1,6 +1,7 @@
 NAME = ./philo
 CC = /bin/cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g 
+#-fsanitize=thread
 #-fsanitize=thread 
 
 GREEN = \033[0;32m
@@ -10,7 +11,7 @@ NC = \033[0m
 
 SRC = parsing.c main.c philo.c utils.c \
 init.c print.c routine.c \
-time.c cleanup.c \
+time.c cleanup.c monitor.c \
 
 OBJ_DIR = ./obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
