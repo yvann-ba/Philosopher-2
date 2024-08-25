@@ -75,7 +75,7 @@ t_philo *init_philos(t_params *params)
 	while (i < params->num_philos)
 	{
 		params->philo[i].id = i + 1;
-		params->philo[i].num_meals = params->num_philos;
+		params->philo[i].num_meals = 0;
 		params->philo[i].last_meal = params->start_time;
 		params->philo[i].params = params;
 

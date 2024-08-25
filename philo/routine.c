@@ -13,16 +13,16 @@ static void	take_forks(t_philo *philo)
      if (philo->id % 2 == 0)
      {
         pthread_mutex_lock(&philo->params->forks[right_fork]);
-        safe_write(philo, GREEN " has taken a fork\n");
+        safe_write(philo, " has taken a fork\n");
         pthread_mutex_lock(&philo->params->forks[left_fork]);
-        safe_write(philo, GREEN " has taken a fork\n");
+        safe_write(philo, " has taken a fork\n");
     } 
     else
     {
         pthread_mutex_lock(&philo->params->forks[left_fork]);
-        safe_write(philo, GREEN " has taken a fork\n");
+        safe_write(philo, " has taken a fork\n");
         pthread_mutex_lock(&philo->params->forks[right_fork]);
-        safe_write(philo, GREEN " has taken a fork\n");
+        safe_write(philo, " has taken a fork\n");
     }
 
 }
@@ -32,6 +32,13 @@ static void eat(t_philo *philo)
     pthread_mutex_lock(&philo->params->meal_mutex);
 	philo->last_meal = get_current_time_in_ms();
     philo->num_meals++;
+    if (philo->num_meals == philo->params->max_meals)
+    {
+        pthread_mutex_lock(&philo->params->all_eaten_mutex);
+        philo->params->all_eaten++;
+        pthread_mutex_unlock(&philo->params->all_eaten_mutex);
+    
+    }
     pthread_mutex_unlock(&philo->params->meal_mutex);
 
     safe_write(philo, " is eating\n");

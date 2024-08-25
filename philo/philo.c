@@ -12,7 +12,6 @@ void start_simulation(t_params *params, int num_philos)
             safe_write(&params->philo[i], " Error: Failed to create thread\n");
             return ;
         }
-        //printf("Philosopher %d\n", i);
         i++;
     }
 }

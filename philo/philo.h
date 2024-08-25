@@ -34,7 +34,7 @@ typedef struct s_philo
 } t_philo;
 
 typedef struct s_params
-{
+{	
 	int 			time_to_die;
 	int 			time_to_eat;
 	int 			time_to_sleep;

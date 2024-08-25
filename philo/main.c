@@ -9,8 +9,7 @@ int main(int argc, char **argv)
 		return (1);
 	start_simulation(params, params->num_philos);
 	monitor_philo(params);
-	join_philos(params);
-	cleanup(params);
+	clean_exit(params);
 	return (0);
 }
 

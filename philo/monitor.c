@@ -12,8 +12,7 @@ int is_philo_died(t_philo *philo)
 	}
     pthread_mutex_lock(&philo->params->meal_mutex);
     current_time = get_current_time_in_ms();
-    //printf("current_time: %lld\n", current_time);
-    //printf("last_meal: %lld\n", philo->last_meal);
+
 	if (philo->params->num_philos != 1 && (current_time - philo->last_meal > philo->params->time_to_die))
 	{
 		safe_write(philo, " is died\n");
@@ -51,7 +50,7 @@ int monitor_philo(t_params *params)
 		if (params->is_dead == 1)
 		{
             pthread_mutex_unlock(&params->is_dead_mutex);
-			//clean_exit(params);
+			clean_exit(params);
 			return (1);
 		}
         pthread_mutex_unlock(&params->is_dead_mutex);
@@ -60,7 +59,7 @@ int monitor_philo(t_params *params)
 			if (is_philo_died(&params->philo[i++]))
 				break;
         }
-		usleep(1000);
+		usleep(10000);
 	}
     return (0);
 }
