@@ -5,6 +5,8 @@ static void	take_forks(t_philo *philo)
     int right_fork;
 	int left_fork;
 
+	if (!philo->params || !philo)
+		return ;
 	right_fork = 0;
 	left_fork = 0;
 	right_fork = (philo->id + 1) % philo->params->num_philos;
@@ -29,6 +31,8 @@ static void	take_forks(t_philo *philo)
 
 static void eat(t_philo *philo)
 {
+	if (!philo->params || !philo)
+		return 
     pthread_mutex_lock(&philo->params->meal_mutex);
 	philo->last_meal = get_current_time_in_ms();
     philo->num_meals++;
@@ -59,6 +63,8 @@ static void eat(t_philo *philo)
 
 static void	sleep_and_think(t_philo *philo)
 {
+    if (!philo->params || !philo)
+		return ;
 	safe_write(philo, " is sleeping\n");
 	usleep(philo->params->time_to_sleep * 1000);
 	safe_write(philo, " is thinking\n");

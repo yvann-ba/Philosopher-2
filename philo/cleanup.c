@@ -60,6 +60,7 @@ int clean_exit(t_params *params)
 {
 	if (params)
 	{
+		printf("Simulation completfgffffe\n");
 		join_philos(params);
 		free_forks(params);
 		free_params(params);

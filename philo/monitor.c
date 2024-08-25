@@ -49,8 +49,8 @@ int monitor_philo(t_params *params)
 		pthread_mutex_lock(&params->is_dead_mutex);
 		if (params->is_dead == 1)
 		{
+			printf("A philo difdsgsajiof]hod\n");
             pthread_mutex_unlock(&params->is_dead_mutex);
-			clean_exit(params);
 			return (1);
 		}
         pthread_mutex_unlock(&params->is_dead_mutex);
