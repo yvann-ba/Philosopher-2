@@ -24,8 +24,7 @@ static void eat(t_philo *philo)
 	if (!philo->params || !philo)
 		return ;
     pthread_mutex_lock(&philo->params->meal_mutex);
-    if (philo->num_meals != philo->params->max_meals)
-        safe_write(philo, " is eating\n");
+    safe_write(philo, " is eating\n");
     pthread_mutex_unlock(&philo->params->meal_mutex);
     pthread_mutex_lock(&philo->params->meal_mutex);
 	philo->last_meal = get_current_time_in_ms();
@@ -38,8 +37,7 @@ static void eat(t_philo *philo)
     }
     pthread_mutex_unlock(&philo->params->meal_mutex);
 
-
-    usleep(philo->params->time_to_eat * 1000);
+    ft_usleep(philo->params->time_to_eat);
     pthread_mutex_unlock(&philo->params->forks[philo->id -1]);
     pthread_mutex_unlock(&philo->params->forks[(philo->id) % philo->params->num_philos]);
 
@@ -51,11 +49,10 @@ static void	sleep_and_think(t_philo *philo)
 {
     if (!philo->params || !philo)
     {
-        //printf("gfg\n");
 		return ;
     }
 	safe_write(philo, " is sleeping\n");
-	usleep(philo->params->time_to_sleep * 1000);
+	ft_usleep(philo->params->time_to_sleep);
 	safe_write(philo, " is thinking\n");
 }
 
@@ -120,7 +117,7 @@ void handle_single_philo(t_philo *philo)
     if (!philo->params || !philo)
         return ;
     safe_write(philo, " has taken a fork\n");
-    usleep(philo->params->time_to_die * 1000);
+    ft_usleep(philo->params->time_to_die);
     safe_write(philo, " died\n");
     pthread_mutex_lock(&philo->params->is_dead_mutex);
     philo->params->is_dead = 1;

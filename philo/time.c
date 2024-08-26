@@ -18,3 +18,14 @@ long long	get_elapsed_time(long long start_time)
 	elapsed_time = get_current_time_in_ms() - start_time;
 	return (elapsed_time);
 }
+
+void	ft_usleep(long long time)
+{
+	long long	start;
+
+	start = get_current_time_in_ms();
+	while (get_current_time_in_ms() - start < time)
+	{
+		usleep(10);
+	}
+}

@@ -81,6 +81,8 @@ void 			safe_write(t_philo *philo, char *msg);
 //TIME
 long long 		get_current_time_in_ms(void);
 long long		get_elapsed_time(long long start_time);
+void			ft_usleep(long long time);
+
 
 //CLEANUP
 void			join_philos(t_params *params);
