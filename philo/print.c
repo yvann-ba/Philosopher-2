@@ -22,7 +22,7 @@ void safe_write(t_philo *philo, char *msg)
 	long long current_time;
 
     pthread_mutex_lock(&philo->params->is_dead_mutex);
-    if (philo->params->is_dead != 1 && philo->params->all_eaten != philo->params->num_philos)
+    if (philo->params->is_dead != 1 && philo->params->all_eaten <= philo->params->num_philos)
     {
         pthread_mutex_lock(&philo->params->write_mutex);
         current_time = get_elapsed_time(philo->params->start_time);

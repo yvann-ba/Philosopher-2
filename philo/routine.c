@@ -24,6 +24,10 @@ static void eat(t_philo *philo)
 	if (!philo->params || !philo)
 		return ;
     pthread_mutex_lock(&philo->params->meal_mutex);
+    if (philo->num_meals != philo->params->max_meals)
+        safe_write(philo, " is eating\n");
+    pthread_mutex_unlock(&philo->params->meal_mutex);
+    pthread_mutex_lock(&philo->params->meal_mutex);
 	philo->last_meal = get_current_time_in_ms();
     philo->num_meals++;
     if (philo->num_meals == philo->params->max_meals)
@@ -34,7 +38,7 @@ static void eat(t_philo *philo)
     }
     pthread_mutex_unlock(&philo->params->meal_mutex);
 
-    safe_write(philo, " is eating\n");
+
     usleep(philo->params->time_to_eat * 1000);
     pthread_mutex_unlock(&philo->params->forks[philo->id -1]);
     pthread_mutex_unlock(&philo->params->forks[(philo->id) % philo->params->num_philos]);
