@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/30 10:23:26 by ybarbot           #+#    #+#             */
+/*   Updated: 2024/08/30 10:34:11 by ybarbot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-//millisecondes
-long long get_current_time_in_ms(void)
+long long	get_current_time_in_ms(void)
 {
 	struct timeval	tv;
 	long long		current_time;
@@ -25,7 +36,5 @@ void	ft_usleep(long long time)
 
 	start = get_current_time_in_ms();
 	while (get_current_time_in_ms() - start < time)
-	{
-		usleep(10);
-	}
+		usleep(30);
 }

@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/30 10:24:08 by ybarbot           #+#    #+#             */
+/*   Updated: 2024/08/30 10:41:50 by ybarbot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-int ft_is_digit(char *str)
+int	ft_is_digit(char *str)
 {
-    int i;
+	int	i;
 
 	i = 0;
-    while (str[i] != '\0')
-    {
-        if (str[i] < '0' || str[i] > '9')
-            return (0);
-        i++;
-    }
-    return (1);
+	while (str[i] != '\0')
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	ft_atoi(const char *str)
@@ -38,4 +50,3 @@ int	ft_atoi(const char *str)
 	}
 	return (sign * res);
 }
-

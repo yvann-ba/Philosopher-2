@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/30 10:09:12 by ybarbot           #+#    #+#             */
+/*   Updated: 2024/08/30 10:40:26 by ybarbot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-int check_args_digits(int argc, char **argv)
+int	check_args_digits(int argc, char **argv)
 {
-	int i;
-	
+	int	i;
+
 	i = 1;
 	while (i < argc)
 	{
@@ -16,7 +28,8 @@ int check_args_digits(int argc, char **argv)
 	}
 	return (0);
 }
-int check_min_times(int argc, char **argv)
+
+int	check_min_times(int argc, char **argv)
 {
 	if (ft_atoi(argv[2]) < 60)
 	{
@@ -41,7 +54,7 @@ int check_min_times(int argc, char **argv)
 	return (0);
 }
 
-int check_args(int argc, char **argv)
+int	check_args(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 	{

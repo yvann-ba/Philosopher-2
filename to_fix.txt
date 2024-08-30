@@ -1,0 +1,31 @@
+➜  philo git:(master) ✗ ./philo 5 800 200 200 7 | grep "4 is eating"
+400 4 is eating
+800 4 is eating
+1400 4 is eating
+1800 4 is eating
+2400 4 is eating
+2800 4 is eating
+
+ONE PHILO EAT ONLY 6 TIME
+
+ Possible data race during read of size 4 at 0x4AA9050 by thread #5
+==633896== Locks held: 4, at addresses 0x4AA9088 0x4AA90C0 0x4AA91D8 0x4AA9200
+==633896==    at 0x401C6E: safe_write (print.c:25)
+==633896==    by 0x4020EE: eat (routine.c:27)
+==633896==    by 0x401E69: philo_routine (routine.c:92)
+==633896==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==633896==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==633896==    by 0x49A2A03: clone (clone.S:100)
+==633896== 
+==633896== This conflicts with a previous write of size 4 by thread #2
+==633896== Locks held: 1, at address 0x4AA9058
+==633896==    at 0x401F02: philo_routine (routine.c:104)
+==633896==    by 0x485396A: ??? (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==633896==    by 0x4911AC2: start_thread (pthread_create.c:442)
+==633896==    by 0x49A2A03: clone (clone.S:100)
+==633896==  Address 0x4aa9050 is 16 bytes inside a block of size 224 alloc'd
+==633896==    at 0x484A919: malloc (in /usr/libexec/valgrind/vgpreload_helgrind-amd64-linux.so)
+==633896==    by 0x40145F: main (main.c:7)
+==633896==  Block was alloc'd by thread #1
+==633896== 
+3421 4 is eating
