@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:19:01 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 10:38:41 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/30 11:45:02 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,14 @@ void	eat(t_philo *philo)
 {
 	if (!philo->params || !philo)
 		return ;
-	//pthread_mutex_lock(&philo->params->meal_mutex);
 	safe_write(philo, " is eating\n");
-	//pthread_mutex_unlock(&philo->params->meal_mutex);
 	pthread_mutex_lock(&philo->params->meal_mutex);
 	philo->last_meal = get_current_time_in_ms();
 	philo->num_meals++;
-	if (philo->num_meals == philo->params->max_meals)
-	{
-		pthread_mutex_lock(&philo->params->all_eaten_mutex);
-		philo->params->all_eaten++;
-		pthread_mutex_unlock(&philo->params->all_eaten_mutex);
-	}
 	pthread_mutex_unlock(&philo->params->meal_mutex);
 	ft_usleep(philo->params->time_to_eat);
-	pthread_mutex_unlock(&philo->params->forks[philo->id -1]);
-	pthread_mutex_unlock(&philo->params->forks[(philo->id) \
-	% philo->params->num_philos]);
+	pthread_mutex_unlock(&philo->params->forks[philo->id - 1]);
+	pthread_mutex_unlock(&philo->params->forks[(philo->id) % philo->params->num_philos]);
 }
 
 void	sleep_and_think(t_philo *philo)
