@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:10:57 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 10:38:23 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/30 11:48:24 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,15 @@ void	ft_putstr(char *str)
 void	safe_write(t_philo *philo, char *msg)
 {
 	long long	current_time;
+	int			should_write;
 
 	pthread_mutex_lock(&philo->params->is_dead_mutex);
-	if (philo->params->is_dead != 1 && \
-	philo->params->all_eaten <= philo->params->num_philos)
+	pthread_mutex_lock(&philo->params->all_eaten_mutex);
+	should_write = (philo->params->is_dead != 1 && 
+					philo->params->all_eaten < philo->params->num_philos);
+	pthread_mutex_unlock(&philo->params->all_eaten_mutex);
+	
+	if (should_write)
 	{
 		pthread_mutex_lock(&philo->params->write_mutex);
 		current_time = get_elapsed_time(philo->params->start_time);
