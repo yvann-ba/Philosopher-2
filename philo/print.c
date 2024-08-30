@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:10:57 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 11:48:24 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/30 11:59:06 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ void	safe_write(t_philo *philo, char *msg)
 
 	pthread_mutex_lock(&philo->params->is_dead_mutex);
 	pthread_mutex_lock(&philo->params->all_eaten_mutex);
-	should_write = (philo->params->is_dead != 1 && 
-					philo->params->all_eaten < philo->params->num_philos);
+	should_write = (philo->params->is_dead != 1 \
+	&& philo->params->all_eaten < philo->params->num_philos);
 	pthread_mutex_unlock(&philo->params->all_eaten_mutex);
-	
 	if (should_write)
 	{
 		pthread_mutex_lock(&philo->params->write_mutex);

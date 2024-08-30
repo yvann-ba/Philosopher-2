@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:20:27 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 11:48:38 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/30 12:00:31 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	should_continue(t_philo *philo)
 
 	pthread_mutex_lock(&philo->params->is_dead_mutex);
 	pthread_mutex_lock(&philo->params->meal_mutex);
-	result = (!philo->params->is_dead && 
-			 (philo->params->max_meals == -1 || 
-			  philo->num_meals < philo->params->max_meals));
+	result = (!philo->params->is_dead && \
+	(philo->params->max_meals == -1 || \
+	philo->num_meals < philo->params->max_meals));
 	pthread_mutex_unlock(&philo->params->meal_mutex);
 	pthread_mutex_unlock(&philo->params->is_dead_mutex);
 	return (result);
