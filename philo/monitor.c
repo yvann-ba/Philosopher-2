@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:03:07 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 13:36:07 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/31 11:01:09 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,8 @@ int	check_all_eaten(t_params *params)
 	if (params->max_meals != -1)
 	{
 		pthread_mutex_lock(&params->all_eaten_mutex);
-		//printf("-------------------all_eaten: %d\n", params->all_eaten);
-		if (params->all_eaten == params->num_philos)
+		if (params->all_eaten >= 1)
 		{
-		//	safe_write(&params->philo[0], "-----------------------------------All meals eaten\n"); 	
 			pthread_mutex_unlock(&params->all_eaten_mutex);
 			return (1);
 		}

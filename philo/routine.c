@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:20:27 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/31 09:54:33 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/31 11:06:35 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,23 @@ void	handle_single_philo(t_philo *philo)
 	return ;
 }
 
-int	should_continue(t_philo *philo)
-{
-	int	result;
-
-	pthread_mutex_lock(&philo->params->is_dead_mutex);
-	pthread_mutex_lock(&philo->params->meal_mutex);
-	result = (!philo->params->is_dead && \
-	(philo->params->max_meals == -1 || \
-	philo->num_meals < philo->params->max_meals));
-	pthread_mutex_unlock(&philo->params->meal_mutex);
-	pthread_mutex_unlock(&philo->params->is_dead_mutex);
-	return (result);
-}
-
 void	handle_philo_routine(t_philo *philo)
 {
-	while (should_continue(philo))
+	while (1)
 	{
 		take_forks(philo);
 		eat(philo);
 		sleep_and_think(philo);
+		pthread_mutex_lock(&philo->params->is_dead_mutex);
+		if (philo->params->is_dead)
+		{
+			pthread_mutex_unlock(&philo->params->is_dead_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->params->is_dead_mutex);
+		if (philo->params->max_meals != -1 \
+		&& philo->num_meals >= philo->params->max_meals)
+			break ;
 	}
 	pthread_mutex_lock(&philo->params->all_eaten_mutex);
 	philo->params->all_eaten++;
@@ -68,7 +64,7 @@ void	*philo_routine(void *arg)
 	else
 	{
 		if (philo->id % 2 == 0)
-			usleep(1000);
+			usleep(10000);
 		handle_philo_routine(philo);
 	}
 	return (NULL);
