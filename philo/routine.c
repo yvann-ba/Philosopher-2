@@ -6,7 +6,7 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:20:27 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 12:00:31 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/31 09:54:33 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (!philo->params || !philo)
 		return (NULL);
+	safe_write(philo, " is thinking\n");
 	if (philo->params->num_philos == 1)
 	{
 		handle_single_philo(philo);
@@ -67,7 +68,7 @@ void	*philo_routine(void *arg)
 	else
 	{
 		if (philo->id % 2 == 0)
-			usleep(10000);
+			usleep(1000);
 		handle_philo_routine(philo);
 	}
 	return (NULL);

@@ -6,11 +6,41 @@
 /*   By: ybarbot <ybarbot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 10:02:04 by ybarbot           #+#    #+#             */
-/*   Updated: 2024/08/30 10:43:56 by ybarbot          ###   ########.fr       */
+/*   Updated: 2024/08/30 13:16:15 by ybarbot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int init_mutex(pthread_mutex_t *mutex) {
+    if (pthread_mutex_init(mutex, NULL) != 0) {
+        printf("Error: Failed to initialize mutex\n");
+        return 1;
+    }
+    return 0;
+}
+
+int init_all_mutexes(t_params *params) {
+    if (init_mutex(&params->is_dead_mutex) != 0) {
+        return 1;
+    }
+    if (init_mutex(&params->all_eaten_mutex) != 0) {
+        pthread_mutex_destroy(&params->is_dead_mutex);
+        return 1;
+    }
+    if (init_mutex(&params->write_mutex) != 0) {
+        pthread_mutex_destroy(&params->is_dead_mutex);
+        pthread_mutex_destroy(&params->all_eaten_mutex);
+        return 1;
+    }
+    if (init_mutex(&params->meal_mutex) != 0) {
+        pthread_mutex_destroy(&params->is_dead_mutex);
+        pthread_mutex_destroy(&params->all_eaten_mutex);
+        pthread_mutex_destroy(&params->write_mutex);
+        return 1;
+    }
+    return 0;
+}
 
 int	init_params(t_params *params, int argc, char **argv)
 {
@@ -26,18 +56,8 @@ int	init_params(t_params *params, int argc, char **argv)
 		params->max_meals = -1;
 	params->all_eaten = 0;
 	params->is_dead = 0;
-	pthread_mutex_init(&params->is_dead_mutex, NULL);
-	pthread_mutex_init(&params->all_eaten_mutex, NULL);
-	pthread_mutex_init(&params->write_mutex, NULL);
-	pthread_mutex_init(&params->meal_mutex, NULL);
-	if (pthread_mutex_init(&params->is_dead_mutex, NULL) || \
-	pthread_mutex_init(&params->all_eaten_mutex, NULL) || \
-	pthread_mutex_init(&params->write_mutex, NULL) || \
-	pthread_mutex_init(&params->meal_mutex, NULL) != 0)
-	{
-		printf("Error: Failed to initialize mutex\n");
+	if (init_all_mutexes(params))
 		return (1);
-	}
 	return (0);
 }
 
